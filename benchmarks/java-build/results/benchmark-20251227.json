@@ -1,0 +1,41 @@
+{
+    "timestamp": "2025-12-27T11:35:00Z",
+    "system": {
+        "os": "Windows 11",
+        "java": "21.0.8 (Microsoft)",
+        "maven": "3.9.6"
+    },
+    "results": [
+        {
+            "tool": "maven",
+            "clean_build_ms": 4927,
+            "incremental_build_ms": 3389,
+            "dependency_resolve_ms": 10808,
+            "notes": "Single Java file + 3 dependencies (guava, jackson, slf4j)"
+        },
+        {
+            "tool": "gradle",
+            "error": "not installed"
+        },
+        {
+            "tool": "buck2",
+            "error": "not installed"
+        },
+        {
+            "tool": "graalvm",
+            "error": "native-image not installed"
+        }
+    ],
+    "summary": {
+        "maven_clean_build": "~5s",
+        "maven_incremental": "~3.4s",
+        "maven_deps_resolution": "~10.8s (cached)",
+        "notes": [
+            "Maven baseline: clean build takes ~5s for trivial project",
+            "Incremental is ~3.4s due to JVM startup + analysis overhead",
+            "Gradle typically 30-50% faster with daemon",
+            "Buck2 can be 2-5x faster on incremental builds",
+            "GraalVM native-image: ~60s compile, but <10ms startup"
+        ]
+    }
+}
