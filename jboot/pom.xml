@@ -178,6 +178,9 @@
     </dependencies>
 
     <build>
+        <!-- Co-located tests: tests live in src/main/java alongside source -->
+        <testSourceDirectory>${project.basedir}/src/main/java</testSourceDirectory>
+        
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -192,11 +195,51 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.2.2</version>
+                    <configuration>
+                        <!-- Unit tests -->
+                        <includes>
+                            <include>**/*Test.java</include>
+                        </includes>
+                        <excludes>
+                            <exclude>**/*IT.java</exclude>
+                            <exclude>**/*E2E.java</exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <version>3.2.2</version>
+                    <configuration>
+                        <!-- Integration tests -->
+                        <includes>
+                            <include>**/*IT.java</include>
+                        </includes>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.3.0</version>
+                    <configuration>
+                        <!-- Exclude test classes from production JAR -->
+                        <excludes>
+                            <exclude>**/*Test.class</exclude>
+                            <exclude>**/*Test.java</exclude>
+                            <exclude>**/*IT.class</exclude>
+                            <exclude>**/*IT.java</exclude>
+                            <exclude>**/*E2E.class</exclude>
+                            <exclude>**/*E2E.java</exclude>
+                        </excludes>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -220,6 +263,30 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+            </plugin>
         </plugins>
     </build>
+    
+    <!-- E2E tests profile -->
+    <profiles>
+        <profile>
+            <id>e2e</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <includes>
+                                <include>**/*E2E.java</include>
+                            </includes>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
