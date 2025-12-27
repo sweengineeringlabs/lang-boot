@@ -19,10 +19,10 @@ Detailed overview for each module (WHAT-WHY-HOW structure):
 
 ### Core Infrastructure
 - [errors](../errors/) - Error types, Result monad
-- [stereotypes](../stereotypes/) - Markers, decorators, annotations ([detailed docs](../stereotypes/doc/overview.md)) ⭐
+- [stereotypes](../stereotypes/) - Markers, decorators, annotations ([docs](../stereotypes/doc/overview.md)) ⭐
 
 ### Application Foundation
-- [async](../async/) - Async utilities, worker pools, parallel execution ⭐ **NEW**
+- [async](../async/) - Async utilities, worker pools ([docs](../async/doc/overview.md)) ⭐
 - [config](../config/) - Configuration management
 - [di](../di/) - Dependency injection
 - [validation](../validation/) - Input validation framework
@@ -32,8 +32,8 @@ Detailed overview for each module (WHAT-WHY-HOW structure):
 - [cache](../cache/) - Caching abstractions
 
 ### Web & API
-- [cli](../cli/) - Command-line interface builder ⭐ **NEW**
-- [openapi](../openapi/) - OpenAPI/Swagger documentation ⭐ **NEW**
+- [cli](../cli/) - Command-line interface builder ([docs](../cli/doc/overview.md)) ⭐
+- [openapi](../openapi/) - OpenAPI/Swagger documentation ([docs](../openapi/doc/overview.md)) ⭐
 - [web](../web/) - Web framework, router, middleware
 - [http](../http/) - HTTP client utilities
 - [session](../session/) - Session management
