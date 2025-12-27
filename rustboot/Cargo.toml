@@ -1,0 +1,63 @@
+[workspace]
+resolver = "2"
+members = [
+    "rustboot",
+    "crates/rustboot-async",
+    "crates/rustboot-cache",
+    "crates/rustboot-cli",
+    "crates/rustboot-compress",
+    "crates/rustboot-config",
+    "crates/rustboot-crypto",
+    "crates/rustboot-database",
+    "crates/rustboot-datetime",
+    "crates/rustboot-debug",
+    "crates/rustboot-di",
+    "crates/rustboot-error",
+    "crates/rustboot-fileio",
+    "crates/rustboot-health",
+    "crates/rustboot-http",
+    "crates/rustboot-macros",
+    "crates/rustboot-messaging",
+    "crates/rustboot-middleware",
+    "crates/rustboot-observability",
+    "crates/rustboot-openapi",
+    "crates/rustboot-parsing",
+    "crates/rustboot-ratelimit",
+    "crates/rustboot-resilience",
+    "crates/rustboot-security",
+    "crates/rustboot-serialization",
+    "crates/rustboot-session",
+    "crates/rustboot-state-machine",
+    "crates/rustboot-streams",
+    "crates/rustboot-toolchain",
+    "crates/rustboot-uuid",
+    "crates/rustboot-validation",
+    "crates/rustboot-web",
+]
+exclude = [
+    "examples/full_application",
+    "examples/e2e-app",
+]
+
+# Note: Member paths stay the same (folder names)
+# Only package names in individual Cargo.toml files change
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = ["Elvis Chidera <elvischidera@gmail.com>"]
+repository = "https://github.com/phdsystems/rustboot"
+
+[workspace.dependencies]
+async-trait = "0.1"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["sync"] }
+tokio-stream = "0.1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+uuid = { version = "1.0", features = ["v4"] }
+thiserror = "1.0"
+criterion = { version = "0.5", features = ["html_reports"] }
+chrono = { version = "0.4", features = ["serde"] }

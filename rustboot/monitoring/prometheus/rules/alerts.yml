@@ -1,0 +1,214 @@
+# Prometheus Alert Rules for Rustboot Applications
+
+groups:
+  - name: rustboot-availability
+    rules:
+      # Service is down
+      - alert: ServiceDown
+        expr: up{job="rustboot-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Rustboot service is down"
+          description: "{{ $labels.instance }} has been down for more than 1 minute."
+
+      # High error rate
+      - alert: HighErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+            /
+            sum(rate(http_requests_total[5m])) by (service)
+          ) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High error rate detected"
+          description: "{{ $labels.service }} has error rate above 5% for 5 minutes."
+
+      # Critical error rate
+      - alert: CriticalErrorRate
+        expr: |
+          (
+            sum(rate(http_requests_total{status=~"5.."}[5m])) by (service)
+            /
+            sum(rate(http_requests_total[5m])) by (service)
+          ) > 0.10
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Critical error rate"
+          description: "{{ $labels.service }} has error rate above 10%."
+
+  - name: rustboot-performance
+    rules:
+      # High latency
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service))
+          > 1.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency detected"
+          description: "{{ $labels.service }} p95 latency is above 1 second."
+
+      # Very high latency
+      - alert: VeryHighLatency
+        expr: |
+          histogram_quantile(0.99, sum(rate(http_request_duration_seconds_bucket[5m])) by (le, service))
+          > 5.0
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Very high latency"
+          description: "{{ $labels.service }} p99 latency is above 5 seconds."
+
+      # High request rate
+      - alert: HighRequestRate
+        expr: sum(rate(http_requests_total[1m])) by (service) > 1000
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High request rate"
+          description: "{{ $labels.service }} is receiving over 1000 requests/second."
+
+  - name: rustboot-resources
+    rules:
+      # High memory usage
+      - alert: HighMemoryUsage
+        expr: |
+          (process_resident_memory_bytes / 1024 / 1024 / 1024) > 2
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High memory usage"
+          description: "{{ $labels.instance }} memory usage is above 2GB."
+
+      # High CPU usage
+      - alert: HighCPUUsage
+        expr: |
+          rate(process_cpu_seconds_total[5m]) > 0.8
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU usage"
+          description: "{{ $labels.instance }} CPU usage is above 80%."
+
+      # Low disk space
+      - alert: LowDiskSpace
+        expr: |
+          (node_filesystem_avail_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) < 0.1
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Low disk space"
+          description: "{{ $labels.instance }} has less than 10% disk space available."
+
+  - name: rustboot-circuit-breaker
+    rules:
+      # Circuit breaker open
+      - alert: CircuitBreakerOpen
+        expr: circuit_breaker_state{state="open"} == 1
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Circuit breaker is open"
+          description: "Circuit breaker {{ $labels.name }} on {{ $labels.service }} is open."
+
+      # Circuit breaker open for too long
+      - alert: CircuitBreakerStuck
+        expr: circuit_breaker_state{state="open"} == 1
+        for: 10m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Circuit breaker stuck open"
+          description: "Circuit breaker {{ $labels.name }} has been open for 10+ minutes."
+
+  - name: rustboot-rate-limiting
+    rules:
+      # High rate limit rejections
+      - alert: HighRateLimitRejections
+        expr: |
+          sum(rate(rate_limit_rejected_total[5m])) by (service) > 100
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High rate limit rejections"
+          description: "{{ $labels.service }} is rejecting over 100 requests/second due to rate limiting."
+
+  - name: rustboot-database
+    rules:
+      # Database connection pool exhausted
+      - alert: DatabasePoolExhausted
+        expr: |
+          db_pool_available_connections == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Database connection pool exhausted"
+          description: "{{ $labels.service }} has no available database connections."
+
+      # High database latency
+      - alert: HighDatabaseLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(db_query_duration_seconds_bucket[5m])) by (le, service))
+          > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High database latency"
+          description: "{{ $labels.service }} database p95 latency is above 500ms."
+
+  - name: rustboot-cache
+    rules:
+      # Low cache hit rate
+      - alert: LowCacheHitRate
+        expr: |
+          (
+            sum(rate(cache_hits_total[5m])) by (service)
+            /
+            (sum(rate(cache_hits_total[5m])) by (service) + sum(rate(cache_misses_total[5m])) by (service))
+          ) < 0.5
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Low cache hit rate"
+          description: "{{ $labels.service }} cache hit rate is below 50%."
+
+  - name: rustboot-health
+    rules:
+      # Health check failing
+      - alert: HealthCheckFailing
+        expr: health_check_status{status="unhealthy"} == 1
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Health check failing"
+          description: "{{ $labels.check }} health check on {{ $labels.service }} is failing."
+
+      # Health check degraded
+      - alert: HealthCheckDegraded
+        expr: health_check_status{status="degraded"} == 1
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Health check degraded"
+          description: "{{ $labels.check }} health check on {{ $labels.service }} is degraded."

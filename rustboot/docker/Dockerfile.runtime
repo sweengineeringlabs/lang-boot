@@ -1,0 +1,65 @@
+# Minimal runtime Dockerfile for Rustboot applications
+# This uses distroless for maximum security and minimal size
+# Use this when you have a pre-built binary
+
+# Option 1: Google Distroless (most minimal, ~20MB)
+FROM gcr.io/distroless/cc-debian12:nonroot AS distroless
+WORKDIR /app
+ARG BINARY_NAME=rustboot-app
+COPY target/release/${BINARY_NAME} /app/app
+EXPOSE 8080
+USER nonroot:nonroot
+CMD ["/app/app"]
+
+# Option 2: Alpine-based (small, with shell for debugging, ~15MB)
+FROM alpine:3.19 AS alpine
+RUN apk add --no-cache ca-certificates libgcc
+
+# Create non-root user
+RUN addgroup -g 1000 appuser && \
+    adduser -D -u 1000 -G appuser appuser
+
+WORKDIR /app
+
+ARG BINARY_NAME=rustboot-app
+COPY target/release/${BINARY_NAME} /app/app
+
+# Set ownership
+RUN chown -R appuser:appuser /app
+
+USER appuser
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
+
+CMD ["/app/app"]
+
+# Option 3: Minimal Debian (balance between size and compatibility, ~80MB)
+FROM debian:bookworm-slim AS debian
+RUN apt-get update && apt-get install -y \
+    ca-certificates \
+    libssl3 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN groupadd -r appuser && useradd -r -g appuser appuser
+
+WORKDIR /app
+
+ARG BINARY_NAME=rustboot-app
+COPY target/release/${BINARY_NAME} /app/app
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD curl -f http://localhost:8080/health || exit 1
+
+CMD ["/app/app"]
+
+# Default to distroless for maximum security
+FROM distroless

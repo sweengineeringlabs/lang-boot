@@ -1,0 +1,13 @@
+[package]
+name = "dev-engineeringlabs-rustboot-state-machine"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "State machine with transitions and guards"
+keywords = ["state-machine", "fsm"]
+categories = ["data-structures"]
+
+[dependencies]
+thiserror.workspace = true

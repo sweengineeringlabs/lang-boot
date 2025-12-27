@@ -1,0 +1,26 @@
+[package]
+name = "rustboot-macros"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Procedural macros for the Rustboot framework"
+
+[lib]
+proc-macro = true
+
+[dependencies]
+syn = { version = "2.0", features = ["full", "extra-traits"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+darling = "0.20"
+
+[dev-dependencies]
+trybuild = "1.0"
+tokio = { version = "1.0", features = ["full", "test-util", "macros", "rt-multi-thread"] }
+tracing = "0.1"
+# Aliased to rustboot_observability for use with #[traced] macro
+rustboot_observability = { package = "dev-engineeringlabs-rustboot-observability", path = "../rustboot-observability" }
+# For #[retry(retryable = true)] macro tests
+rustboot_error = { package = "rustboot-error", path = "../rustboot-error" }

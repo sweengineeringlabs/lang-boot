@@ -1,0 +1,15 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: rustboot-app
+  labels:
+    app: rustboot-app
+    environment: production
+spec:
+  minAvailable: 2
+  # Alternatively, use maxUnavailable instead:
+  # maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: rustboot-app
+  unhealthyPodEvictionPolicy: IfHealthyBudget

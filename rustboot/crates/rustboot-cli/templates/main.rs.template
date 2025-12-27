@@ -1,0 +1,29 @@
+//! {{project_name}} - A Rustboot Application
+//!
+//! This is a basic web server built with the Rustboot framework.
+
+use dev_engineeringlabs_rustboot_http::{HttpClient, ReqwestClient};
+use tracing::{info, Level};
+use tracing_subscriber;
+
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize tracing
+    tracing_subscriber::fmt()
+        .with_max_level(Level::INFO)
+        .init();
+
+    info!("Starting {{project_name}}...");
+
+    // Create HTTP client
+    let client = ReqwestClient::new();
+
+    // Example: Make a simple HTTP request
+    let response = client.get("https://httpbin.org/get").await?;
+    info!("Response status: {}", response.status);
+    info!("Response successful: {}", response.is_success());
+
+    info!("{{project_name}} is running!");
+
+    Ok(())
+}

@@ -1,0 +1,8 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 81ff400dd9c08b50b4d10595c404244038bb20fdd036ccff3edd16fa5ef95697 # shrinks to s = ComplexStruct { numbers: [], floats: [-1.988759238048757e-308], nested: [], map_like: [] }
+cc c42768229b21611dfeb28b745e3bc674d6897bab9d91dbaeca0bbbd6da5c8875 # shrinks to f = 6.976634045267711e146

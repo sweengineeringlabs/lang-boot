@@ -1,0 +1,38 @@
+[project]
+name = "pyboot-observability"
+version = "0.1.0"
+description = "Pyboot Observability - Logging, metrics, and tracing"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+authors = [
+    { name = "Software Engineering Labs", email = "dev@engineeringlab.dev" }
+]
+keywords = ["pyboot", "observability", "logging", "metrics", "tracing"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Typing :: Typed",
+]
+dependencies = [
+    "pyboot-common",
+]
+
+[project.optional-dependencies]
+opentelemetry = [
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/phd-systems/pyboot"
+Repository = "https://github.com/phd-systems/pyboot"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

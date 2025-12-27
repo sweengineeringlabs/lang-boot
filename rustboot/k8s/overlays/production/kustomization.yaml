@@ -1,0 +1,112 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Metadata
+metadata:
+  name: rustboot-production
+  annotations:
+    config.kubernetes.io/local-config: "true"
+
+# Base configuration
+bases:
+- ../../base
+
+# Namespace override
+namespace: production
+
+# Name prefix for resources
+namePrefix: prod-
+
+# Common labels for production
+commonLabels:
+  environment: production
+  app.kubernetes.io/version: v1.0.0
+
+# Common annotations
+commonAnnotations:
+  environment: "production"
+  managed-by: "kustomize"
+
+# Image overrides
+images:
+- name: rustboot-app
+  newName: your-registry.io/rustboot-app
+  newTag: v1.0.0
+
+# Replicas override (more replicas in production)
+replicas:
+- name: rustboot-app
+  count: 3
+
+# Patches for production environment
+patches:
+- patch: |-
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: rustboot-app
+    spec:
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 1
+          maxUnavailable: 0
+      template:
+        spec:
+          containers:
+          - name: rustboot-app
+            env:
+            - name: APP_ENV
+              value: "production"
+            - name: RUST_LOG
+              value: "info"
+            - name: LOG_LEVEL
+              value: "info"
+            # Production resource limits
+            resources:
+              requests:
+                memory: "256Mi"
+                cpu: "200m"
+              limits:
+                memory: "1Gi"
+                cpu: "1000m"
+            # Production-ready probe settings
+            livenessProbe:
+              initialDelaySeconds: 30
+              periodSeconds: 10
+              timeoutSeconds: 5
+              failureThreshold: 3
+            readinessProbe:
+              initialDelaySeconds: 10
+              periodSeconds: 5
+              timeoutSeconds: 3
+              failureThreshold: 3
+            startupProbe:
+              initialDelaySeconds: 0
+              periodSeconds: 5
+              timeoutSeconds: 3
+              failureThreshold: 12
+
+# ConfigMap overrides
+configMapGenerator:
+- name: rustboot-config
+  behavior: merge
+  literals:
+  - APP_ENV=production
+  - LOG_LEVEL=info
+  - LOG_FORMAT=json
+  - RATE_LIMIT_ENABLED=true
+  - RATE_LIMIT_REQUESTS_PER_SECOND=1000
+  - RATE_LIMIT_BURST_SIZE=2000
+  - DATABASE_POOL_MAX_CONNECTIONS=20
+  - SERVER_WORKERS=8
+  - METRICS_ENABLED=true
+  - CORS_ALLOW_ORIGINS=https://yourdomain.com
+
+# Production-specific resources
+resources:
+- hpa.yaml
+- pdb.yaml
+- networkpolicy.yaml
+- ingress.yaml
+- servicemonitor.yaml

@@ -1,0 +1,105 @@
+# Rust build artifacts
+target/
+**/*.rs.bk
+*.pdb
+
+# Cargo lock files (uncomment if you don't want to include it)
+# Cargo.lock
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+
+# Documentation (include if needed for docs generation)
+*.md
+docs/
+doc/
+!README.md
+
+# Docker files (don't copy docker files into themselves)
+docker/
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+secrets/
+
+# Tests (uncomment if you don't run tests in Docker)
+# tests/
+# **/tests/
+
+# Examples (uncomment if you don't need examples in production)
+# examples/
+# **/examples/
+
+# Backlog and planning docs
+backlog.md
+**/backlog.md
+TODO.md
+CHANGELOG.md
+
+# Logs
+*.log
+logs/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Coverage reports
+coverage/
+*.profraw
+*.profdata
+
+# Benchmark results
+criterion/
+benches/
+
+# Cache directories
+.cache/
+node_modules/
+
+# Editor backup files
+*~
+*.bak
+*.orig
+
+# Rust specific
+**/*.rs.bk
+rust-toolchain.toml
+
+# SQLite databases (for local dev)
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Redis dumps
+dump.rdb
+appendonly.aof

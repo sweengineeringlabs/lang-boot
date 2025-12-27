@@ -1,0 +1,109 @@
+# Alertmanager Configuration for Rustboot Applications
+
+global:
+  # Global SMTP configuration (update with your settings)
+  # smtp_smarthost: 'smtp.example.com:587'
+  # smtp_from: 'alertmanager@example.com'
+  # smtp_auth_username: 'alertmanager@example.com'
+  # smtp_auth_password: 'password'
+
+  # Slack webhook (update with your URL)
+  # slack_api_url: 'https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK'
+
+  # PagerDuty integration key
+  # pagerduty_url: 'https://events.pagerduty.com/v2/enqueue'
+
+  resolve_timeout: 5m
+
+# Route configuration
+route:
+  # Default receiver
+  receiver: 'default-receiver'
+
+  # Group alerts by these labels
+  group_by: ['alertname', 'service', 'severity']
+
+  # Wait before sending first notification
+  group_wait: 30s
+
+  # Wait before sending updated notification
+  group_interval: 5m
+
+  # Wait before resending notification
+  repeat_interval: 4h
+
+  # Child routes for different severities
+  routes:
+    # Critical alerts - immediate notification
+    - match:
+        severity: critical
+      receiver: 'critical-receiver'
+      group_wait: 10s
+      repeat_interval: 1h
+
+    # Warning alerts - less urgent
+    - match:
+        severity: warning
+      receiver: 'warning-receiver'
+      group_wait: 1m
+      repeat_interval: 4h
+
+    # Info alerts - daily digest
+    - match:
+        severity: info
+      receiver: 'info-receiver'
+      group_wait: 30m
+      repeat_interval: 24h
+
+# Receivers configuration
+receivers:
+  - name: 'default-receiver'
+    # Default: webhook to custom endpoint
+    webhook_configs:
+      - url: 'http://localhost:5001/alerts'
+        send_resolved: true
+
+  - name: 'critical-receiver'
+    # Critical: multiple channels
+    webhook_configs:
+      - url: 'http://localhost:5001/alerts/critical'
+        send_resolved: true
+    # Uncomment and configure for Slack
+    # slack_configs:
+    #   - channel: '#alerts-critical'
+    #     send_resolved: true
+    #     title: '{{ template "slack.title" . }}'
+    #     text: '{{ template "slack.text" . }}'
+
+  - name: 'warning-receiver'
+    webhook_configs:
+      - url: 'http://localhost:5001/alerts/warning'
+        send_resolved: true
+    # slack_configs:
+    #   - channel: '#alerts-warning'
+    #     send_resolved: true
+
+  - name: 'info-receiver'
+    webhook_configs:
+      - url: 'http://localhost:5001/alerts/info'
+        send_resolved: false
+
+# Inhibition rules
+inhibit_rules:
+  # If a critical alert fires, mute warning alerts for same service
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'service']
+
+  # If service is down, mute all other alerts for that service
+  - source_match:
+      alertname: 'ServiceDown'
+    target_match_re:
+      alertname: '.+'
+    equal: ['service']
+
+# Templates for notifications
+templates:
+  - '/etc/alertmanager/templates/*.tmpl'

@@ -1,0 +1,17 @@
+[package]
+name = "dev-engineeringlabs-rustboot-fileio"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Safe file I/O operations and utilities"
+keywords = ["file", "io", "filesystem"]
+categories = ["filesystem"]
+
+[dependencies]
+thiserror = { workspace = true }
+tempfile = "3.0"
+
+[dev-dependencies]
+tokio = { version = "1.0", features = ["full"] }

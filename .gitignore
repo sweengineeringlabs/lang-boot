@@ -1,0 +1,66 @@
+# Rust
+**/target/
+**/*.rs.bk
+*.pdb
+# Don't ignore root Cargo.lock, but ignore in examples
+/Cargo.lock
+!examples/**/Cargo.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Documentation (rustdoc output, not crate docs)
+target/doc/
+
+# Build artifacts
+*.o
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Test outputs
+*.profraw
+*.profdata
+
+# Temporary files
+*.tmp
+*.log
+*.txt
+!.cargo/*.txt
+
+# Environment and secrets
+.env
+.env.local
+*.key
+*.pem
+*.crt
+secrets/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Coverage and profiling
+*.profraw
+*.profdata
+coverage/
+*.gcda
+*.gcno
+
+# Proptest regressions (optional - some prefer to commit these)
+# **/*.proptest-regressions
+
+# OS specific
+Thumbs.db
+.DS_Store
+
+# Backup files
+*.bak
+*.backup

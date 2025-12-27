@@ -1,0 +1,31 @@
+# Editor directories and files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS files
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+*.orig
+*.log
+
+# Test projects
+test-project/
+example-*/
+
+# Build artifacts (if any tooling is added later)
+dist/
+build/
+target/
+node_modules/
+
+# Documentation builds
+_build/
+site/

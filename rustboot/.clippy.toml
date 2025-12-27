@@ -1,0 +1,9 @@
+# Clippy configuration for rustboot
+
+# Type complexity threshold (default is 250)
+# Lower = stricter, catches simpler complex types
+type-complexity-threshold = 200
+
+# Function complexity threshold (cyclomatic complexity)
+# Default is 25, lower catches simpler complex functions  
+cognitive-complexity-threshold = 20

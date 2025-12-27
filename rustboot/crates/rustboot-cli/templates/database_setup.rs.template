@@ -1,0 +1,30 @@
+// Database setup module
+// Add this to your main.rs or create a separate module
+
+use dev_engineeringlabs_rustboot_database::{
+    pool::{Config as PoolConfig, Pool, PoolBuilder},
+    Database, SqlxDriver,
+};
+use std::time::Duration;
+
+/// Initialize database connection pool
+pub async fn init_database() -> Result<Pool<SqlxDriver>, Box<dyn std::error::Error>> {
+    let config = PoolConfig {
+        max_size: 10,
+        min_idle: Some(2),
+        connection_timeout: Duration::from_secs(30),
+        idle_timeout: Some(Duration::from_secs(600)),
+        max_lifetime: Some(Duration::from_secs(1800)),
+    };
+
+    let database_url = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgres://user:password@localhost/mydb".to_string());
+
+    let pool = PoolBuilder::new()
+        .config(config)
+        .connection_string(&database_url)
+        .build::<SqlxDriver>()
+        .await?;
+
+    Ok(pool)
+}

@@ -1,0 +1,17 @@
+[package]
+name = "dev-engineeringlabs-rustboot-async"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Async runtime utilities and helpers"
+keywords = ["async", "tokio", "runtime"]
+categories = ["asynchronous"]
+
+[dependencies]
+tokio = { workspace = true, features = ["rt", "rt-multi-thread", "time", "macros"] }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+tokio = { version = "1.0", features = ["full", "test-util"] }

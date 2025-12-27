@@ -1,0 +1,98 @@
+# Code Owners for rustboot framework
+# These owners will be automatically requested for review when a PR is opened
+
+# Default owners for everything in the repo
+* @elvischidera
+
+# Workflow and CI/CD configuration
+/.github/ @elvischidera
+
+# Core framework
+/rustboot/ @elvischidera
+
+# Documentation
+/docs/ @elvischidera
+*.md @elvischidera
+
+# Dependency injection module
+/crates/rustboot-di/ @elvischidera
+
+# HTTP module
+/crates/rustboot-http/ @elvischidera
+
+# Database module
+/crates/rustboot-database/ @elvischidera
+
+# Messaging module
+/crates/rustboot-messaging/ @elvischidera
+
+# Middleware module
+/crates/rustboot-middleware/ @elvischidera
+
+# Security-related modules
+/crates/rustboot-security/ @elvischidera
+/crates/rustboot-crypto/ @elvischidera
+
+# State machine module
+/crates/rustboot-state-machine/ @elvischidera
+
+# Observability module
+/crates/rustboot-observability/ @elvischidera
+
+# Configuration module
+/crates/rustboot-config/ @elvischidera
+
+# Resilience module
+/crates/rustboot-resilience/ @elvischidera
+
+# Rate limiting module
+/crates/rustboot-ratelimit/ @elvischidera
+
+# Validation module
+/crates/rustboot-validation/ @elvischidera
+
+# Cache module
+/crates/rustboot-cache/ @elvischidera
+
+# Serialization module
+/crates/rustboot-serialization/ @elvischidera
+
+# Async utilities
+/crates/rustboot-async/ @elvischidera
+
+# File I/O module
+/crates/rustboot-fileio/ @elvischidera
+
+# Compression module
+/crates/rustboot-compress/ @elvischidera
+
+# Date/Time utilities
+/crates/rustboot-datetime/ @elvischidera
+
+# UUID utilities
+/crates/rustboot-uuid/ @elvischidera
+
+# Toolchain utilities
+/crates/rustboot-toolchain/ @elvischidera
+
+# Macros module
+/crates/rustboot-macros/ @elvischidera
+
+# Streams module
+/crates/rustboot-streams/ @elvischidera
+
+# OpenAPI module
+/crates/rustboot-openapi/ @elvischidera
+
+# Health check module
+/crates/rustboot-health/ @elvischidera
+
+# Session module
+/crates/rustboot-session/ @elvischidera
+
+# Web module
+/crates/rustboot-web/ @elvischidera
+
+# Build and release configuration
+Cargo.toml @elvischidera
+Cargo.lock @elvischidera

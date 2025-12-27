@@ -1,0 +1,16 @@
+[package]
+name = "dev-engineeringlabs-rustboot-cache"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Caching abstraction with TTL support"
+keywords = ["cache", "memory", "ttl"]
+categories = ["caching"]
+
+[dependencies]
+thiserror.workspace = true
+
+[dev-dependencies]
+proptest = "1.5"

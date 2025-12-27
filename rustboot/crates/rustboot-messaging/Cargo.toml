@@ -1,0 +1,38 @@
+[package]
+name = "dev-engineeringlabs-rustboot-messaging"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description = "Pub/sub messaging abstraction"
+keywords = ["messaging", "pubsub"]
+categories = ["network-programming"]
+
+[dependencies]
+async-trait.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tokio.workspace = true
+uuid.workspace = true
+thiserror.workspace = true
+
+# Redis support (optional)
+redis = { version = "0.27", features = ["tokio-comp", "connection-manager"], optional = true }
+
+# RabbitMQ support (optional)
+lapin = { version = "2.3", optional = true }
+futures = { version = "0.3", optional = true }
+
+# Kafka support (optional)
+rdkafka = { version = "0.36", features = ["tokio"], optional = true }
+
+[dev-dependencies]
+tokio = { version = "1.0", features = ["full", "test-util", "macros", "rt-multi-thread"] }
+
+[features]
+default = []
+redis-broker = ["redis"]
+rabbitmq-broker = ["lapin", "futures"]
+kafka-broker = ["rdkafka"]
+all-brokers = ["redis-broker", "rabbitmq-broker", "kafka-broker"]
