@@ -271,30 +271,47 @@ mvn verify -Pe2e            # Maven
 
 ## 🐍 Python
 
-### Separate tests/ Directory
+> **📝 Convention Note**: The traditional Python convention uses a separate `tests/` directory.
+> **Lang-Boot adopts co-located tests** because we believe domain aspects must co-locate —
+> tests are part of the domain knowledge and should live alongside the code they verify.
+> Co-located tests are **self-documenting**: they serve as living examples of how to use the code.
+
+### Co-located Tests (Lang-Boot Convention)
 
 ```
 mypackage/
 ├── __init__.py
 ├── handler.py
-└── tests/
-    ├── __init__.py
-    └── test_handler.py
+├── test_handler.py        ← Unit test (co-located)
+├── test_handler_it.py     ← Integration test (co-located)
+└── service.py
 ```
 
-### Co-located Alternative
+### pyproject.toml Configuration
 
-```
-mypackage/
-├── __init__.py
-├── handler.py
-└── test_handler.py    ← Same directory
+```toml
+[tool.pytest.ini_options]
+# Co-located tests: tests live alongside source code
+testpaths = ["src/mypackage"]
+python_files = "test_*.py"
 ```
 
-Both work with pytest. Co-located requires:
-```bash
-pytest mypackage/
-```
+### Test Naming Conventions
+
+| Pattern | Type | Command |
+|---------|------|---------|
+| `test_*.py` | Unit | `pytest` |
+| `test_*_it.py` | Integration | `pytest -k "_it"` |
+| `test_*_e2e.py` | End-to-end | `pytest -k "_e2e"` |
+
+### Benefits of Co-location
+
+| Benefit | Description |
+|---------|-------------|
+| **Discoverability** | Tests are next to the code they test |
+| **Refactoring** | Move module = tests move with it |
+| **Code review** | See tests in same PR diff |
+| **Self-documenting** | Tests show usage examples |
 
 | Location | Convention |
 |----------|------------|
