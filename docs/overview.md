@@ -13,6 +13,7 @@ Lang-Boot provides **4 framework implementations** (Rust, Python, Java, Go) with
 ## Table of Contents
 
 - [What is Lang-Boot?](#what-is-lang-boot)
+  - [Language Internals](#language-internals)
 - [Why Lang-Boot?](#why-lang-boot)
 - [How to Use Lang-Boot](#how-to-use-lang-boot)
 - [Audience](#audience)
@@ -63,6 +64,119 @@ All frameworks provide these cross-cutting concerns:
 - **Observability** — Logging, metrics, tracing, health checks
 - **Database** — Repository patterns, transactions, query builders
 - **State Machines** — FSM with guards, actions, transitions
+
+### Language Internals
+
+Understanding how each language works helps in choosing the right framework for your use case:
+
+#### 🦀 Rust
+
+| Aspect | Details |
+|--------|---------|
+| **Compilation** | Ahead-of-Time (AOT) via LLVM backend |
+| **Output** | Native machine code (binary executable) |
+| **Runtime** | Minimal runtime, no garbage collector |
+| **Memory** | Ownership system with borrow checker (compile-time safety) |
+| **Concurrency** | Zero-cost abstractions, async/await with tokio/async-std |
+| **Type System** | Static, strong, algebraic data types (enums, structs) |
+| **Error Handling** | `Result<T, E>` and `Option<T>` (no exceptions) |
+
+```
+Source (.rs) → rustc → LLVM IR → Machine Code → Binary
+```
+
+**Key Characteristics:**
+- No garbage collection pauses
+- Memory safety without runtime overhead
+- Compile-time thread safety via `Send`/`Sync` traits
+- Zero-cost abstractions (pay only for what you use)
+
+---
+
+#### 🐍 Python
+
+| Aspect | Details |
+|--------|---------|
+| **Compilation** | Source → Bytecode (at import time) |
+| **Output** | `.pyc` bytecode files (portable) |
+| **Runtime** | CPython interpreter (or PyPy, GraalPy) |
+| **Memory** | Reference counting + cyclic garbage collector |
+| **Concurrency** | GIL limits CPU parallelism; async via asyncio |
+| **Type System** | Dynamic, strong; optional type hints (PEP 484) |
+| **Error Handling** | Exceptions (`try`/`except`) |
+
+```
+Source (.py) → Compiler → Bytecode (.pyc) → PVM (Python Virtual Machine)
+```
+
+**Key Characteristics:**
+- Interpreted with JIT options (PyPy)
+- Global Interpreter Lock (GIL) affects multithreading
+- Excellent for rapid development and scripting
+- Rich ecosystem for data science and web
+
+---
+
+#### ☕ Java
+
+| Aspect | Details |
+|--------|---------|
+| **Compilation** | Source → Bytecode (via javac) |
+| **Output** | `.class` files (platform-independent bytecode) |
+| **Runtime** | JVM (HotSpot, GraalVM, OpenJ9) |
+| **Memory** | Automatic garbage collection (G1, ZGC, Shenandoah) |
+| **Concurrency** | OS threads + Virtual Threads (Java 21+) |
+| **Type System** | Static, strong, nominal typing |
+| **Error Handling** | Checked/unchecked exceptions |
+
+```
+Source (.java) → javac → Bytecode (.class) → JIT → Machine Code
+```
+
+**Key Characteristics:**
+- "Write once, run anywhere" via JVM
+- Just-In-Time (JIT) compilation for performance
+- Virtual Threads enable millions of concurrent tasks
+- Mature ecosystem with extensive libraries
+
+---
+
+#### 🦫 Go
+
+| Aspect | Details |
+|--------|---------|
+| **Compilation** | Ahead-of-Time (AOT) via Go compiler |
+| **Output** | Native machine code (statically linked binary) |
+| **Runtime** | Minimal runtime with garbage collector |
+| **Memory** | Concurrent, tri-color mark-and-sweep GC |
+| **Concurrency** | Goroutines (lightweight threads) + channels |
+| **Type System** | Static, strong, structural typing (interfaces) |
+| **Error Handling** | Multiple return values (value, error pattern) |
+
+```
+Source (.go) → go build → Machine Code → Single Binary
+```
+
+**Key Characteristics:**
+- Fast compilation (seconds, not minutes)
+- Single static binary with no dependencies
+- Built-in concurrency with goroutines (< 2KB stack)
+- Simple language spec (25 keywords)
+
+---
+
+#### Comparison Summary
+
+| Feature | Rust | Python | Java | Go |
+|---------|------|--------|------|-----|
+| **Compilation** | AOT | Interpreted/Bytecode | JIT | AOT |
+| **Garbage Collection** | None (ownership) | Reference counting + GC | Yes (JVM GC) | Yes (concurrent GC) |
+| **Memory Safety** | Compile-time | Runtime | Runtime (null checks) | Runtime |
+| **Startup Time** | Fast | Slow | Slow (JVM warmup) | Fast |
+| **Binary Size** | Medium | N/A (needs interpreter) | N/A (needs JVM) | Large (static) |
+| **Concurrency Model** | async/await + threads | asyncio + threads (GIL) | Virtual threads | Goroutines |
+| **Learning Curve** | Steep | Gentle | Moderate | Gentle |
+| **Use Cases** | Systems, WebAssembly, CLI | Scripts, ML, Web | Enterprise, Android | Cloud, CLI, Microservices |
 
 ---
 
