@@ -1,0 +1,19 @@
+# Buck2 Build Configuration for Java Benchmark Project
+
+load("@prelude//java:java.bzl", "java_binary", "java_library")
+
+# Main application
+java_binary(
+    name = "app",
+    main_class = "com.example.App",
+    deps = [":lib"],
+)
+
+java_library(
+    name = "lib",
+    srcs = glob(["src/**/*.java"]),
+    deps = [
+        # External dependencies would be defined in BUCK files
+        # For benchmark purposes, we compile without deps first
+    ],
+)
