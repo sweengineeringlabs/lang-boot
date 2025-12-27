@@ -831,6 +831,17 @@ lang-boot/
 | JBoot | [docs/overview.md](../jboot/docs/overview.md) | modules/\*/src/test/ |
 | Goboot | [docs/overview.md](../goboot/docs/overview.md) | [examples/](../goboot/examples/) |
 
+### Developer Guides (Implementation Details)
+
+This overview explains **concepts**. For language-specific **implementation details**, see:
+
+| Framework | Developer Guide | Architecture |
+|-----------|-----------------|--------------|
+| Rustboot | [4-development/developer-guide.md](../rustboot/docs/4-development/developer-guide.md) | [3-design/architecture.md](../rustboot/docs/3-design/architecture.md) |
+| Pyboot | [4-development/developer-guide.md](../pyboot/docs/4-development/developer-guide.md) | [3-design/architecture.md](../pyboot/docs/3-design/architecture.md) |
+| JBoot | [4-development/developer-guide.md](../jboot/docs/4-development/developer-guide.md) | [3-design/architecture.md](../jboot/docs/3-design/architecture.md) |
+| Goboot | [4-development/developer-guide.md](../goboot/docs/4-development/developer-guide.md) | [3-design/architecture.md](../goboot/docs/3-design/architecture.md) |
+
 ---
 
 ## Contributing
