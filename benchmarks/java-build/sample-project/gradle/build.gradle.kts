@@ -25,11 +25,3 @@ dependencies {
 application {
     mainClass.set("com.example.App")
 }
-
-// Enable build cache
-buildCache {
-    local {
-        isEnabled = true
-        directory = File(rootDir, ".gradle-cache")
-    }
-}

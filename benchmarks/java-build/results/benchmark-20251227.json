@@ -1,9 +1,10 @@
 {
-    "timestamp": "2025-12-27T11:35:00Z",
+    "timestamp": "2025-12-27T11:45:00Z",
     "system": {
         "os": "Windows 11",
         "java": "21.0.8 (Microsoft)",
-        "maven": "3.9.6"
+        "maven": "3.9.6",
+        "gradle": "8.5"
     },
     "results": [
         {
@@ -11,11 +12,14 @@
             "clean_build_ms": 4927,
             "incremental_build_ms": 3389,
             "dependency_resolve_ms": 10808,
-            "notes": "Single Java file + 3 dependencies (guava, jackson, slf4j)"
+            "notes": "No daemon, single Java file + 3 dependencies"
         },
         {
             "tool": "gradle",
-            "error": "not installed"
+            "clean_build_no_cache_ms": 24795,
+            "clean_build_with_cache_ms": 3036,
+            "incremental_build_ms": 2408,
+            "notes": "First run downloads Gradle wrapper + deps, with cache is much faster"
         },
         {
             "tool": "buck2",
@@ -27,15 +31,28 @@
         }
     ],
     "summary": {
-        "maven_clean_build": "~5s",
-        "maven_incremental": "~3.4s",
-        "maven_deps_resolution": "~10.8s (cached)",
+        "comparison": {
+            "clean_build": {
+                "maven": "4.9s",
+                "gradle_cold": "24.8s (first run, downloading deps)",
+                "gradle_cached": "3.0s"
+            },
+            "incremental_build": {
+                "maven": "3.4s",
+                "gradle": "2.4s (daemon running)"
+            }
+        },
+        "winner": {
+            "incremental": "Gradle (2.4s vs Maven 3.4s) - 30% faster",
+            "cached_rebuild": "Gradle with cache (3s vs Maven 5s) - 40% faster"
+        },
         "notes": [
-            "Maven baseline: clean build takes ~5s for trivial project",
-            "Incremental is ~3.4s due to JVM startup + analysis overhead",
-            "Gradle typically 30-50% faster with daemon",
-            "Buck2 can be 2-5x faster on incremental builds",
-            "GraalVM native-image: ~60s compile, but <10ms startup"
+            "Gradle's daemon makes incremental builds faster",
+            "Gradle's first run is slow due to downloading wrapper",
+            "Build cache dramatically speeds up clean rebuilds",
+            "Maven is more consistent (no daemon to manage)",
+            "Buck2 would likely be 2-5x faster than Gradle",
+            "GraalVM native-image trades ~60s compile for <10ms startup"
         ]
     }
 }
