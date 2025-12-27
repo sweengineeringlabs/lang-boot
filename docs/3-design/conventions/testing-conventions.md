@@ -101,7 +101,7 @@ func TestPublic(t *testing.T) {
 > **📝 Convention Note**: The traditional Java convention uses a separate `src/test/java/` tree. 
 > **Lang-Boot adopts co-located tests** because we believe domain aspects must co-locate — 
 > tests are part of the domain knowledge and should live alongside the code they verify.
-> This improves discoverability, refactoring, and code review.
+> Co-located tests are **self-documenting**: they serve as living examples of how to use the code.
 
 ### Co-located Tests (Lang-Boot Convention)
 
