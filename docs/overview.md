@@ -99,6 +99,26 @@ All frameworks provide these cross-cutting concerns:
 
 ---
 
+## Design Conventions
+
+Idiomatic patterns for all four languages: **[conventions/overview.md](3-design/conventions/overview.md)**
+
+| Convention | Description |
+|------------|-------------|
+| [Testing](3-design/conventions/testing-conventions.md) | Unit tests, integration, co-location |
+| [Error Handling](3-design/conventions/error-handling.md) | Result types, exceptions |
+| [Naming](3-design/conventions/naming-conventions.md) | snake_case, camelCase, PascalCase |
+| [Project Structure](3-design/conventions/project-structure.md) | Directory layouts |
+| [Documentation](3-design/conventions/documentation.md) | Doc comments, docstrings |
+| [Async & Concurrency](3-design/conventions/async-concurrency.md) | async/await, goroutines |
+| [Visibility](3-design/conventions/visibility-access.md) | pub, public, private |
+| [Modules & Imports](3-design/conventions/modules-imports.md) | Import styles |
+| [Dependencies](3-design/conventions/dependency-management.md) | Cargo, pip, Maven, go mod |
+| [Logging](3-design/conventions/logging.md) | Structured logging |
+| [Configuration](3-design/conventions/configuration.md) | Environment, config files |
+
+---
+
 ## Getting Started
 
 1. **Choose your framework** based on language preference
